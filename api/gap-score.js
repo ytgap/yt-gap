@@ -2,43 +2,56 @@ import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
   const { q } = req.query;
+
   if (!q) return res.status(400).json({ error: 'Missing query' });
 
   const results = [];
   const rapidApiKey = process.env.RAPIDAPI_KEY;
   const rapidApiHost = 'youtube-v31.p.rapidapi.com';
 
-  // Get suggestions from YouTube autocomplete
-  const suggestRes = await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(q)}`);
-  const suggestions = (await suggestRes.json())[1].slice(0, 5);
+  console.log('🔍 Searching suggestions for:', q);
 
-  for (const term of suggestions) {
-    try {
-      const ytRes = await fetch(`https://${rapidApiHost}/search?q=${encodeURIComponent(term)}&part=snippet&id&type=video&maxResults=1`, {
-        method: 'GET',
-        headers: {
-          'X-RapidAPI-Key': rapidApiKey,
-          'X-RapidAPI-Host': rapidApiHost,
-        },
-      });
+  try {
+    const suggestRes = await fetch(
+      `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(q)}`
+    );
+    const suggestJson = await suggestRes.json();
+    const suggestions = suggestJson[1].slice(0, 5);
 
-      const data = await ytRes.json();
+    for (const term of suggestions) {
+      try {
+        const ytRes = await fetch(
+          `https://${rapidApiHost}/search?q=${encodeURIComponent(term)}&part=snippet&type=video&maxResults=5`,
+          {
+            method: 'GET',
+            headers: {
+              'X-RapidAPI-Key': rapidApiKey,
+              'X-RapidAPI-Host': rapidApiHost,
+            },
+          }
+        );
 
-      // Fake demand, real video count fallback
-      const videoCount = data?.pageInfo?.totalResults || data?.items?.length || 0;
-      const searchVolume = Math.floor(Math.random() * 50000) + 5000;
-      const gapScore = Math.round((searchVolume / (videoCount + 1)) * 100);
+        const data = await ytRes.json();
+        const videoCount = data?.items?.length || 0;
+        const fakeSearchVolume = Math.floor(Math.random() * 50000) + 10000;
+        const gapScore = Math.round((fakeSearchVolume / (videoCount + 1)) * 100);
 
-      results.push({
-        suggestion: term,
-        searchVolume,
-        videoCount,
-        gapScore,
-      });
-    } catch (err) {
-      console.error(`Error with term "${term}":`, err);
+        results.push({
+          suggestion: term,
+          searchVolume: fakeSearchVolume,
+          videoCount,
+          gapScore,
+        });
+
+        console.log(`✅ Term: "${term}" | Videos: ${videoCount} | Gap Score: ${gapScore}`);
+      } catch (err) {
+        console.error(`🚨 Error fetching YouTube data for "${term}":`, err.message);
+      }
     }
-  }
 
-  res.status(200).json({ results });
+    return res.status(200).json({ results });
+  } catch (outerError) {
+    console.error('❌ Gap Finder API Failed:', outerError.message);
+    return res.status(500).json({ error: 'Something went wrong.' });
+  }
 }
