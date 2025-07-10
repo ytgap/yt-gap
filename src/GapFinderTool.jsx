@@ -14,11 +14,10 @@ export default function GapFinderTool() {
 
     try {
       const response = await fetch(`/api/yt-suggest?q=${encodeURIComponent(topic)}`);
-const data = await response.json();
-setSuggestions(data.suggestions || []);
- // suggestions array is the second item
+      const data = await response.json();
+      setSuggestions(data.suggestions || []);
     } catch (error) {
-      console.error('Error fetching YouTube suggestions:', error);
+      console.error('Error fetching suggestions:', error);
       setSuggestions([]);
     } finally {
       setLoading(false);
@@ -26,13 +25,13 @@ setSuggestions(data.suggestions || []);
   };
 
   return (
-    <section className="bg-white py-16 px-6 md:px-12 text-center">
+    <section id="gap-finder" className="bg-white py-16 px-6 md:px-12 text-center">
       <div className="max-w-2xl mx-auto">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Live YouTube Search Suggestions
+          Discover Untapped YouTube Search Ideas
         </h2>
         <p className="text-lg text-gray-700 mb-6">
-          Discover what people are searching for on YouTube — in real time.
+          Enter a topic and uncover what viewers are searching for — but creators haven’t filled yet.
         </p>
 
         <form onSubmit={fetchSuggestions} className="flex flex-col sm:flex-row gap-4 justify-center">
