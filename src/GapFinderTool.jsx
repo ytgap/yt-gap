@@ -4,6 +4,7 @@ export default function GapFinderTool() {
   const [topic, setTopic] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const fetchSuggestions = async (e) => {
     e.preventDefault();
@@ -11,6 +12,7 @@ export default function GapFinderTool() {
 
     setLoading(true);
     setSuggestions([]);
+    setHasSearched(true);
 
     try {
       const response = await fetch(`/api/yt-suggest?q=${encodeURIComponent(topic)}`);
@@ -42,7 +44,12 @@ export default function GapFinderTool() {
             placeholder="Try: fitness, gaming, cooking"
             className="px-4 py-3 w-full sm:w-2/3 rounded-lg border border-gray-300 focus:outline-none"
             value={topic}
-            onChange={(e) => setTopic(e.target.value)}
+            onChange={(e) => {
+              setTopic(e.target.value);
+              if (e.target.value.trim() === '') {
+                setHasSearched(false); // reset the "searched" flag if input is cleared
+              }
+            }}
           />
           <button
             type="submit"
@@ -54,7 +61,6 @@ export default function GapFinderTool() {
 
         {loading && <p className="mt-6 text-gray-500 italic">Fetching suggestions...</p>}
 
-        {/* RESULTS */}
         <div className="mt-10 text-left space-y-4">
           {suggestions.length > 0 ? (
             suggestions.map((s, index) => {
@@ -81,7 +87,7 @@ export default function GapFinderTool() {
               );
             })
           ) : (
-            topic &&
+            hasSearched &&
             !loading && (
               <p className="mt-4 text-gray-500 italic">
                 No suggestions found for "{topic}" — try a broader topic.
