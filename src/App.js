@@ -7,6 +7,7 @@ import GapFinderTools from './GapFinderTools';
 import FeaturedVideos from './FeaturedVideos';
 import BlogTeaser from './BlogTeaser';
 import EmailSignup from './EmailSignup';
+import GapFinderTool from './GapFinderTool';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <HeroSection />
       <WhatIsYtGap />
       <GapFinderTools />
+    <GapFinderTool />
       <FeaturedVideos />
       <BlogTeaser />
       <EmailSignup />
