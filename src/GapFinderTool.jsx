@@ -13,11 +13,10 @@ export default function GapFinderTool() {
     setSuggestions([]);
 
     try {
-      const response = await fetch(
-        `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(topic)}`
-      );
-      const data = await response.json();
-      setSuggestions(data[1]); // suggestions array is the second item
+      const response = await fetch(`/api/yt-suggest?q=${encodeURIComponent(topic)}`);
+const data = await response.json();
+setSuggestions(data.suggestions || []);
+ // suggestions array is the second item
     } catch (error) {
       console.error('Error fetching YouTube suggestions:', error);
       setSuggestions([]);
