@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 const randomCategory = (choices) => choices[Math.floor(Math.random() * choices.length)];
 
@@ -8,16 +8,28 @@ export default function GapFinderTool() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
+  // Cache to store results for each topic
+  const cacheRef = useRef({});
+
   const fetchSuggestions = async (e) => {
     e.preventDefault();
-    if (!topic.trim()) return;
+    const trimmedTopic = topic.trim();
+    if (!trimmedTopic) return;
 
     setLoading(true);
     setResults([]);
     setHasSearched(false);
 
+    // Check cache first
+    if (cacheRef.current[trimmedTopic]) {
+      setResults(cacheRef.current[trimmedTopic]);
+      setHasSearched(true);
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await fetch(`/api/gap-score?q=${encodeURIComponent(topic)}`);
+      const response = await fetch(`/api/gap-score?q=${encodeURIComponent(trimmedTopic)}`);
       const data = await response.json();
 
       const enhanced = data.results.map((r) => ({
@@ -25,6 +37,9 @@ export default function GapFinderTool() {
         searchVolume: randomCategory(['Low', 'Moderate', 'High']),
         gapPotential: randomCategory(['Low', 'Medium', 'High']),
       }));
+
+      // Save in cache
+      cacheRef.current[trimmedTopic] = enhanced;
 
       setResults(enhanced);
       setHasSearched(true);
@@ -102,7 +117,7 @@ export default function GapFinderTool() {
           )}
         </div>
 
-        <p className="mt-4 text-xs text-gray-400 italic">
+        <p className="mt-3 text-xs text-gray-400 italic">
           ** Search Volume and Gap Potential are estimated and not guaranteed to be accurate.
         </p>
       </div>
