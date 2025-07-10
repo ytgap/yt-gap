@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export default async function handler(req, res) {
   const { q } = req.query;
 
@@ -13,13 +11,12 @@ export default async function handler(req, res) {
 
   try {
     const suggestRes = await fetch(
-  `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(q)}`
-);
-const suggestJson = await suggestRes.json();
+      `https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(q)}`
+    );
+    const suggestJson = await suggestRes.json();
 
-console.log('🧪 Suggest API response:', suggestJson);
-
-    const suggestions = suggestJson[1].slice(0, 5);
+    console.log('🧪 Suggest API response:', suggestJson);
+    const suggestions = suggestJson[1]?.slice(0, 5) || [];
 
     for (const term of suggestions) {
       try {
