@@ -60,3 +60,17 @@ export default function GapFinderTool() {
               {suggestions.map((s, index) => (
                 <li key={index}>{s}</li>
               ))}
+            </ul>
+          ) : (
+            topic &&
+            !loading && (
+              <p className="mt-4 text-gray-500 italic">
+                No suggestions found for "{topic}" — try a broader topic.
+              </p>
+            )
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
