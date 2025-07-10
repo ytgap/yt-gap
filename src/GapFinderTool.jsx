@@ -24,6 +24,8 @@ export default function GapFinderTool() {
     }
   };
 
+  const generateMockScore = () => Math.floor(Math.random() * 50) + 50;
+
   return (
     <section id="gap-finder" className="bg-white py-16 px-6 md:px-12 text-center">
       <div className="max-w-2xl mx-auto">
@@ -52,13 +54,32 @@ export default function GapFinderTool() {
 
         {loading && <p className="mt-6 text-gray-500 italic">Fetching suggestions...</p>}
 
-        <div className="mt-8 text-left">
+        {/* RESULTS */}
+        <div className="mt-10 text-left space-y-4">
           {suggestions.length > 0 ? (
-            <ul className="list-disc list-inside text-gray-800 space-y-2">
-              {suggestions.map((s, index) => (
-                <li key={index}>{s}</li>
-              ))}
-            </ul>
+            suggestions.map((s, index) => {
+              const gapScore = generateMockScore();
+
+              return (
+                <div
+                  key={index}
+                  className="flex items-center justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm hover:shadow-md transition w-full"
+                >
+                  <span className="text-gray-900 font-medium text-base">{s}</span>
+                  <span
+                    className={`text-sm font-semibold px-3 py-1 rounded-full ${
+                      gapScore >= 80
+                        ? 'bg-green-100 text-green-700'
+                        : gapScore >= 65
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    Gap Score: {gapScore}
+                  </span>
+                </div>
+              );
+            })
           ) : (
             topic &&
             !loading && (
