@@ -22,11 +22,15 @@ export default function HeroSection() {
             Discover hidden content opportunities on YouTube. Stop guessing. Start growing.
           </p>
           <button
-            onClick={scrollToGapFinder}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-lg text-lg transition"
-          >
-            Start Finding Gaps
-          </button>
+  onClick={() => {
+    const el = document.getElementById('gap-finder');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }}
+  className="mt-8 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg shadow-lg transition"
+>
+  Start Finding Gaps
+</button>
+
         </div>
 
         {/* Right Column: Image */}
