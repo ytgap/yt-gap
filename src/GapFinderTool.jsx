@@ -6,6 +6,7 @@ export default function GapFinderTool() {
   const [topic, setTopic] = useState('');
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const fetchSuggestions = async (e) => {
     e.preventDefault();
@@ -13,6 +14,7 @@ export default function GapFinderTool() {
 
     setLoading(true);
     setResults([]);
+    setHasSearched(false);
 
     try {
       const response = await fetch(`/api/gap-score?q=${encodeURIComponent(topic)}`);
@@ -25,9 +27,11 @@ export default function GapFinderTool() {
       }));
 
       setResults(enhanced);
+      setHasSearched(true);
     } catch (error) {
       console.error('Error fetching results:', error);
       setResults([]);
+      setHasSearched(true);
     } finally {
       setLoading(false);
     }
@@ -75,7 +79,7 @@ export default function GapFinderTool() {
         {loading && <p className="mt-6 text-gray-500 italic">Finding gap signals...</p>}
 
         <div className="mt-10 grid gap-6 text-left">
-          {results.length > 0 ? (
+          {results.length > 0 &&
             results.map((r, index) => (
               <div
                 key={index}
@@ -89,19 +93,17 @@ export default function GapFinderTool() {
                   📊 <strong>Gap Potential:</strong> {r.gapPotential} {getGapIcon(r.gapPotential)}
                 </p>
               </div>
-            ))
-          ) : (
-            topic &&
-            !loading && (
-              <p className="mt-6 text-gray-500 italic">
-                No suggestions found for "{topic}" — try a broader topic.
-              </p>
-            )
+            ))}
+
+          {hasSearched && !loading && results.length === 0 && (
+            <p className="mt-6 text-gray-500 italic">
+              No suggestions found for "{topic}" — try a broader topic.
+            </p>
           )}
         </div>
 
-        <p className="mt-5 text-xs text-gray-400 italic">
-          ** Search Volume and Gap Potential are estimated and not guaranteed to be accurate. 
+        <p className="mt-4 text-xs text-gray-400 italic">
+          ** Search Volume and Gap Potential are estimated and not guaranteed to be accurate.
         </p>
       </div>
     </section>
