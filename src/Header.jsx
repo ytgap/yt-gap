@@ -7,7 +7,7 @@ export default function Header() {
         <img
           src="/ytgap-logo1.jpg"
           alt="YT Gap Logo"
-          className="h-20 w-auto object-contain"
+          className="h-15 w-auto object-contain"
         />
       </div>
     </header>
