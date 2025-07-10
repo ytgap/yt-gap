@@ -78,7 +78,7 @@ export default function GapFinderTool() {
         <form onSubmit={fetchSuggestions} className="flex flex-col sm:flex-row gap-4 justify-center">
           <input
             type="text"
-            placeholder="Try: dogs, AI, productivity"
+            placeholder="Enter a niche or search term"
             className="px-4 py-3 w-full sm:w-2/3 rounded-lg border border-gray-300 focus:outline-none"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
