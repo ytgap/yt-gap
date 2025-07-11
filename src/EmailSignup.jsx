@@ -12,16 +12,16 @@ export default function EmailSignup() {
   }, []);
 
   return (
-    <section className="bg-gray-100 py-16 px-6 md:px-12 text-center border-t border-gray-200">
+    <section className="bg-gray-900 py-16 px-6 md:px-12 text-center border-t border-gray-800">
       <div className="max-w-xl mx-auto">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl font-bold text-white mb-4">
           📬 Be the First to Find the Gaps
         </h2>
-        <p className="text-gray-700 mb-6">
+        <p className="text-gray-300 mb-6">
           Subscribe and get notified when new YouTube content opportunities are uncovered.
         </p>
 
-        <div className="shadow-md rounded-lg overflow-hidden bg-white p-4 sm:p-6">
+        <div className="shadow-lg rounded-lg overflow-hidden bg-gray-800 p-4 sm:p-6">
           <iframe
             src="https://subscribe-forms.beehiiv.com/086a414f-282d-4876-a293-f9a8752a75ff"
             className="w-full"
@@ -31,9 +31,10 @@ export default function EmailSignup() {
             style={{
               width: '100%',
               maxWidth: '100%',
-              height: '160px',
+              height: '316px',
               backgroundColor: 'transparent',
               border: 'none',
+              filter: 'invert(1) hue-rotate(180deg)',
             }}
           ></iframe>
         </div>
