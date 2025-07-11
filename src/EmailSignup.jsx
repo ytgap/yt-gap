@@ -1,40 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 export default function EmailSignup() {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://subscribe-forms.beehiiv.com/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
-    <section className="bg-gray-100 py-16 px-6 md:px-12 text-center">
+    <section className="bg-gray-100 py-16 px-6 md:px-12 text-center border-t border-gray-200">
       <div className="max-w-xl mx-auto">
         <h2 className="text-3xl font-bold text-gray-900 mb-4">
-          📬 Get Notified When New Gaps Are Found
+          📬 Be the First to Find the Gaps
         </h2>
         <p className="text-gray-700 mb-6">
-          Subscribe and we’ll alert you when new YouTube content opportunities appear.
+          Subscribe and get notified when new YouTube content opportunities are uncovered.
         </p>
 
-        <form
-          action="https://subscribe-forms.beehiiv.com/086a414f-282d-4876-a293-f9a8752a75ff"
-          method="POST"
-          target="_blank"
-          className="flex flex-col sm:flex-row gap-4 justify-center"
-        >
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="Your email address"
-            className="px-4 py-3 w-full sm:w-2/3 rounded-lg border border-gray-300 focus:outline-none"
-          />
-
-          <button
-            type="submit"
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-3 rounded-lg transition"
-          >
-            Notify Me
-          </button>
-        </form>
+        <div className="shadow-md rounded-lg overflow-hidden bg-white p-4 sm:p-6">
+          <iframe
+            src="https://subscribe-forms.beehiiv.com/086a414f-282d-4876-a293-f9a8752a75ff"
+            className="w-full"
+            data-test-id="beehiiv-embed"
+            frameBorder="0"
+            scrolling="no"
+            style={{
+              width: '100%',
+              maxWidth: '100%',
+              height: '316px',
+              backgroundColor: 'transparent',
+              border: 'none',
+            }}
+          ></iframe>
+        </div>
 
         <p className="mt-4 text-xs text-gray-500 italic">
-          Powered by Beehiiv — you can unsubscribe anytime.
+          No spam. Just powerful insights from the Gap Gods.
         </p>
       </div>
     </section>
