@@ -13,7 +13,7 @@ export default function EmailSignup() {
 
   return (
     <section className="bg-gray-900 py-12 px-6 md:px-12 text-center border-t border-gray-800">
-      <div className="max-w-xl mx-auto">
+      <div className="max-w-2xl mx-auto">
         <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
           📬 Be the First to Find the Gaps
         </h2>
@@ -21,19 +21,17 @@ export default function EmailSignup() {
           Get notified when we uncover hidden YouTube content gold.
         </p>
 
-        <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg p-3 sm:p-4 border border-gray-700">
+        <div className="bg-white rounded-lg overflow-hidden shadow-md mx-auto" style={{ maxWidth: '100%' }}>
           <iframe
             src="https://subscribe-forms.beehiiv.com/086a414f-282d-4876-a293-f9a8752a75ff"
             className="w-full"
             frameBorder="0"
             scrolling="no"
             style={{
-              height: '200px',
-              backgroundColor: 'transparent',
+              width: '100%',
+              height: '280px',
               border: 'none',
               borderRadius: '0.5rem',
-              transform: 'scale(1)',
-              transformOrigin: 'top',
             }}
           ></iframe>
         </div>
