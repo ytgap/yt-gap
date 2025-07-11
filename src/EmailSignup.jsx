@@ -31,7 +31,7 @@ export default function EmailSignup() {
             style={{
               width: '100%',
               maxWidth: '100%',
-              height: '316px',
+              height: '160px',
               backgroundColor: 'transparent',
               border: 'none',
             }}
